@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.github</groupId>
+        <artifactId>PruneRpc</artifactId>
+        <version>1.0</version>
+    </parent>
+
+    <artifactId>consumer</artifactId>
+
+    <dependencies>
+        <!-- RPC Common -->
+        <dependency>
+            <groupId>com.github</groupId>
+            <artifactId>common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!-- RPC Registry with ZooKeeper -->
+        <dependency>
+            <groupId>com.github</groupId>
+            <artifactId>registry</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
+</project>
