@@ -11,7 +11,9 @@ public class AddTwoNumClient {
         RpcProxy rpcProxy = context.getBean(RpcProxy.class);
 
         AddTwoNumber addTwoNumber = rpcProxy.create(AddTwoNumber.class);
-        int res = addTwoNumber.add(2,4);
-        System.out.println("add result: 2 + 4 = "+res);
+        for (int i=0; i<10000; i++) {
+            int res = addTwoNumber.add(2,4);
+            System.out.println("add result: 2 + 4 = "+res);
+        }
     }
 }

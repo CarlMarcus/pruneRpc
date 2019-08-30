@@ -10,3 +10,5 @@
 局域网内分布式调用10000次，TPS为15.686。
 
 单机伪分布式调用10000次，TPS为69.386。
+
+序列化工具选型参考：https://github.com/eishay/jvm-serializers/wiki
