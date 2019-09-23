@@ -41,13 +41,13 @@ public class RpcClient extends SimpleChannelInboundHandler<RpcResponse> {
     }
 
     public RpcResponse send(RpcRequest request) throws Exception {
-        EventLoopGroup group = new NioEventLoopGroup();
+        EventLoopGroup group = new NioEventLoopGroup(); // 一个死循环，不停地检测IO事件，处理IO事件，执行任务
         try {
             // 创建并初始化 客户端 Bootstrap 对象，这就是客户端启动器
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(group);
-            bootstrap.channel(NioSocketChannel.class);
-            bootstrap.handler(new ChannelInitializer<SocketChannel>() {
+            bootstrap.channel(NioSocketChannel.class); // 表示客户端启动的是nio相关的channel
+            bootstrap.handler(new ChannelInitializer<SocketChannel>() { // 表示客户端启动过程中，需要经过哪些流程
                 @Override
                 public void initChannel(SocketChannel channel) throws Exception {
                     ChannelPipeline pipeline = channel.pipeline();
@@ -58,11 +58,12 @@ public class RpcClient extends SimpleChannelInboundHandler<RpcResponse> {
             });
             bootstrap.option(ChannelOption.TCP_NODELAY, true);
             // 连接 RPC 服务器
+            // 这里就是真正的启动过程了，绑定ip+端口，同步等待连接指服务器完毕，才会进入下行代码
             ChannelFuture future = bootstrap.connect(host, port).sync();
             // 写入 RPC 请求数据并关闭连接
             Channel channel = future.channel();
             channel.writeAndFlush(request).sync();
-            channel.closeFuture().sync();
+            channel.closeFuture().sync();  // 等待关闭socket
             // 返回 RPC 响应对象
             return response;
         } finally {

@@ -84,19 +84,22 @@ public class RpcServer implements ApplicationContextAware, InitializingBean {
      */
     @Override
     public void afterPropertiesSet() throws Exception {
-        EventLoopGroup bossGroup = new NioEventLoopGroup(); // BOSS 线程池
+        EventLoopGroup bossGroup = new NioEventLoopGroup(); // BOSS 线程池，就是一个死循环，不停地检测IO事件，处理IO事件，执行任务
         EventLoopGroup workerGroup = new NioEventLoopGroup(); // WORK 线程池
         try {
             // 创建并初始化 服务端的 Bootstrap 对象，这个就是服务启动器
             ServerBootstrap bootstrap = new ServerBootstrap();
             // 指定Netty服务端进程 的Boss线程和work线程
             bootstrap.group(bossGroup, workerGroup);
+            // bossGroup的作用就是不断地accept到新的连接，将新的连接丢给workerGroup来处理
             // 如果是以下的申明方式，说明BOSS线程和WORK线程共享一个线程池（实际上一般的情况环境下，这种共享线程池的方式已经够了）
             // serverBootstrap.group(workerGroup);
+
 
             // 设置服务端的通道类型，只能是实现了ServerChannel接口的“服务器”通道类
             bootstrap.channel(NioServerSocketChannel.class);
             // 用Netty编写网络程序的时候，你很少直接操纵Channel，而是通过ChannelHandler来间接操纵Channel,用于处理Channel对应的事件。
+            // 表示一条新的连接进来之后，该怎么处理，也就是上面所说的，老板如何给工人配活
             bootstrap.childHandler(new ChannelInitializer<NioSocketChannel>() {
                 @Override
                 public void initChannel(NioSocketChannel channel) throws Exception {

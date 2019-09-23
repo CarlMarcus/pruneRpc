@@ -39,6 +39,7 @@ public class RpcServerHandler extends SimpleChannelInboundHandler<RpcRequest> {
             response.setException(e);
         }
         // 写入 RPC 响应对象并自动关闭连接
+        // 当做了一个I/O操作并有任何后续任务的时候，推荐优先使用addListener(GenericFutureListener)的方式来获得通知，完全异步，没有任何阻塞
         ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
     }
 
